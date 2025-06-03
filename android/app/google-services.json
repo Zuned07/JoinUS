@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480439870320",
+    "project_id": "joinus-2e386",
+    "storage_bucket": "joinus-2e386.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480439870320:android:bbdf2f109c9f4ac998a5b5",
+        "android_client_info": {
+          "package_name": "com.example.joinus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Mxdt6bxX36LZftWHyAmxnZC1AIM2A_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
