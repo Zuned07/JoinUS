@@ -1,6 +1,8 @@
 class Validators {
-  static final RegExp _passwordRegExp =
-      RegExp(r'^(?=.*[A-Z])(?=.*\d)(?=.*[+\-/*_])[A-Za-z\d+\-/*_]{6,}$');
+  static final RegExp _uppercaseRegExp = RegExp(r'[A-Z]');
+  static final RegExp _numberRegExp = RegExp(r'\d');
+  static final RegExp _specialCharRegExp = RegExp(r'[+\-/*_]');
+  static final int _minLength = 6;
 
   static String? validateEmail(String? value) {
     if (value == null || !value.contains('@')) {
@@ -10,10 +12,29 @@ class Validators {
   }
 
   static String? validatePassword(String? value) {
-    if (value == null || !_passwordRegExp.hasMatch(value)) {
-      return 'Debe contener una mayúscula, un número y un carácter especial permitido (+ - / * _)';
+    if (value == null) {
+      return 'La contraseña no puede estar vacía';
     }
-    return null;
+    List<String> errors = [];
+
+    if (value.length < _minLength) {
+      errors.add('Debe tener al menos $_minLength caracteres');
+    }
+    if (!_uppercaseRegExp.hasMatch(value)) {
+      errors.add('Falta una letra mayúscula');
+    }
+    if (!_numberRegExp.hasMatch(value)) {
+      errors.add('Falta un número');
+    }
+    if (!_specialCharRegExp.hasMatch(value)) {
+      errors.add('Falta un carácter especial (+ - / * _)');
+    }
+
+    if (errors.isEmpty) {
+      return null;
+    } else {
+      return errors.join('\n');
+    }
   }
 
   static String? validateUsername(String? value) {
