@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
 
       case 1:
-      Navigator.popAndPushNamed(context, '/calendar');
+      Navigator.pushNamed(context, '/calendar');
         break;
 
       case 2:

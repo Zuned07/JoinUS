@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.joinus"
-        minSdk = 24    // Cambiar mínimo SDK a 23
+        minSdk = 24   
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName

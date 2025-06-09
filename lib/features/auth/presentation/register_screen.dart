@@ -31,11 +31,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _usernameController.text.trim(),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Usuario registrado con éxito")),
+          SnackBar(content: Text("Usuario registrado con éxito")),          
         );
 
-        // Navegar a la encuesta u otra pantalla
-        // Navigator.pushReplacementNamed(context, '/survey');
+
+        Navigator.popAndPushNamed(context, '/home');
 
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: "Nombre de usuario"),
+                decoration: InputDecoration(labelText: "Nombre de usuario", helperText: "Será su identificador único como usuario"),
                 validator: Validators.validateUsername,
               ),
               TextFormField(

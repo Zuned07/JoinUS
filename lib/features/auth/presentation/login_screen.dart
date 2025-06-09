@@ -2,15 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:joinus/core/services/firebase_auth_service.dart';
 import 'package:joinus/core/utils/validators.dart';
+import 'package:joinus/core/services/google_auth_servide.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+  
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _googleAuthService = GoogleAuthService();
+
+void _loginWithGoogle() async {
+  setState(() => _loading = true);
+
+  final user = await _googleAuthService.signInWithGoogle();
+
+  setState(() => _loading = false);
+
+  if (user != null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Sesión iniciada con Google')),
+    );
+    Navigator.pushReplacementNamed(context, '/home');
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('No se pudo iniciar sesión con Google')),
+    );
+  }
+}
   final _formKey = GlobalKey<FormState>();
   final _authService = FirebaseAuthService();
 
@@ -89,6 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: _login,
                       child: Text("Iniciar sesión"),
                     ),
+                    const SizedBox( height: 20),
+                    ElevatedButton.icon(
+                      icon: Icon(Icons.login),
+                      onPressed: _loading ? null: _loginWithGoogle,
+                      label: Text("Iniciar con Google"))
             ],
           ),
         ),
