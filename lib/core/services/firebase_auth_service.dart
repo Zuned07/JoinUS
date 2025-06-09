@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,8 +42,9 @@ class FirebaseAuthService {
   }
 
 
-  Future<void> logout() async {
+  Future<void> logout(BuildContext context) async {
     await _auth.signOut();
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   User? get currentUser => _auth.currentUser;
