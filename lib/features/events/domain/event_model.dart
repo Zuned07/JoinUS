@@ -1,5 +1,5 @@
 class EventModel {
-  final String id;
+  final String? id;
   final String title;
   final DateTime date;
   final String? description;
