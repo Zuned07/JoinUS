@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:joinus/core/services/firebase_auth_service.dart';
 import 'package:joinus/core/utils/validators.dart';
+import 'package:joinus/core/services/google_auth_servide.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -10,7 +11,9 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _googleAuthService = GoogleAuthService();
   final _formKey = GlobalKey<FormState>();
   final _authService = FirebaseAuthService();
 
@@ -47,6 +50,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  void _loginWithGoogle() async {
+    setState(() => _loading = true);
+
+    final user = await _googleAuthService.signInWithGoogle();
+
+    setState(() => _loading = false);
+
+    if (user != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sesión iniciada con Google')),
+      );
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No se pudo iniciar sesión con Google')),
+      );
+    }
+  }
+
+  /// Builds the Google Sign-In button with proper styling.
+ Widget _buildGoogleSignInButton() {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white, // Fondo blanco
+        foregroundColor: Colors.black.withOpacity(0.87), // Texto casi negro
+        side: const BorderSide(color: Color(0xFF747775), width: 1), // Borde gris sutil
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100.0), // Bordes ligeramente redondeados
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Espaciado interno
+        elevation: 0, // Sin sombra o muy poca
+      ),
+      
+      icon: Image.asset( 
+        'assets/images/google.png', 
+        height: 30, 
+        width: 30,  
+      ),
+
+      onPressed: _loading ? null : _loginWithGoogle,
+      label: const Text(
+        "Continuar con Google", 
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500, 
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: _register,
                       child: Text("Registrarse"),
                     ),
+              const SizedBox(height: 20),              
+              _buildGoogleSignInButton(),
             ],
           ),
         ),
