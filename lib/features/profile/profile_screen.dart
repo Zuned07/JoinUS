@@ -16,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser!;
   List<String> selectedTags = [];
-  bool isDarkMode = true;
+  bool isDarkMode = false;
 
   final List<String> availableTags = [
     'exterior', 'deportes', 'familia', 'citas', 'interior',
@@ -39,6 +39,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         selectedTags = List<String>.from(data['interests']);
       });
     }
+  }
+
+  void _addfriend (){
+    Navigator.pushNamed(context, '/add-friend');
   }
 
   Future<void> _saveTags() async {
@@ -100,6 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: const Icon(Icons.save),
               label: const Text('Guardar intereses'),
             ),
+            SizedBox(height: 20),
+            ElevatedButton.icon(onPressed: _addfriend, icon: Icon(Icons.add_circle_sharp), label: Text("Añadir Amigo"))
           ],
         ),
       ),
