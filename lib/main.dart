@@ -10,6 +10,7 @@ import 'features/home/presentation/calendar_screen.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'features/profile/profile_screen.dart';
 import 'features/auth/presentation/create_username.dart'; // Importa la nueva pantalla
+import 'features/profile/add_friend_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,6 +89,8 @@ class _JoinUsAppState extends State<JoinUsApp> {
         '/create-event': (context) => const CreateEventScreen(),        
         '/profile': (context) => ProfileScreen(toggleTheme: toggleTheme),
         '/create-username': (context) => const CreateUsernameScreen(),
+        '/add-friend': (context) => const AddFriendScreen(),
+
       },
       debugShowCheckedModeBanner: false, // Oculta la etiqueta de depuración
     );
