@@ -63,6 +63,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pop(context);
   }
 
+    void _friendlist() {
+    Navigator.pushNamed(context, '/view-friend');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +115,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               label: const Text('Guardar intereses'),
             ),
             SizedBox(height: 20),
-            ElevatedButton.icon(onPressed: _addfriend, icon: Icon(Icons.add_circle_sharp), label: Text("Añadir Amigo"))
+            ElevatedButton.icon(onPressed: _addfriend, icon: Icon(Icons.add_circle_sharp), label: Text("Añadir Amigo")),
+            ElevatedButton.icon(onPressed: _friendlist, icon: Icon(Icons.people), label: Text("Ver amigos"))
           ],
         ),
       ),
