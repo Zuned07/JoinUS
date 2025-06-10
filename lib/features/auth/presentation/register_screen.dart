@@ -51,22 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _loginWithGoogle() async {
-    setState(() => _loading = true);
-
-    final user = await _googleAuthService.signInWithGoogle();
-
-    setState(() => _loading = false);
-
-    if (user != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sesión iniciada con Google')),
-      );
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No se pudo iniciar sesión con Google')),
-      );
-    }
+    await _googleAuthService.signInWithGoogle(context);
   }
 
   /// Builds the Google Sign-In button with proper styling.
