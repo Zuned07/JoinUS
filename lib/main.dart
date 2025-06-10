@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:joinus/features/auth/presentation/login_screen.dart';
-import 'package:joinus/features/auth/presentation/register_screen.dart';
-import 'package:joinus/features/auth/presentation/welcome_screen.dart';
-import 'package:joinus/features/events/presentation/create_event_screen.dart';
-import 'package:joinus/features/home/presentation/calendar_screen.dart';
+
 import 'firebase_options.dart';
+import 'features/auth/presentation/login_screen.dart';
+import 'features/auth/presentation/register_screen.dart';
+import 'features/auth/presentation/welcome_screen.dart';
+import 'features/events/presentation/create_event_screen.dart';
+import 'features/home/presentation/calendar_screen.dart';
 import 'features/home/presentation/home_screen.dart';
+import 'features/profile/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,19 +30,17 @@ class JoinUsApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(214, 232, 8, 240)),
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      home: const AuthWrapper(), 
       routes: {
-        '/home':(context) => HomeScreen(),
-        '/register':(context) => RegisterScreen(),
-        '/welcome':(context) => WelcomeScreen(),
-        '/login':(context) => LoginScreen(),
-        '/calendar': (context) => CalendarScreen(),
-        '/create-event': (context) => CreateEventScreen(),
-        
-
+        '/home': (context) => const HomeScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/welcome': (context) => const WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/calendar': (context) => const CalendarScreen(),
+        '/create-event': (context) => const CreateEventScreen(),
+        '/profile': (context) => const ProfileScreen(), 
       },
-      debugShowCheckedModeBanner: false,
-      home: const AuthWrapper(),
+      
     );
   }
 }
@@ -56,7 +56,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         } else if (snapshot.hasData) {
-          return HomeScreen();
+          return const HomeScreen();
         } else {
           return const WelcomeScreen();
         }
