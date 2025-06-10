@@ -52,6 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _loginWithGoogle() async {
     await _googleAuthService.signInWithGoogle(context);
+    await _googleAuthService.saveFcmTokenToFirestore();
   }
 
   /// Builds the Google Sign-In button with proper styling.

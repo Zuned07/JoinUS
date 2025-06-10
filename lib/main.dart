@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,12 +12,21 @@ import 'features/home/presentation/home_screen.dart';
 import 'features/profile/profile_screen.dart';
 import 'features/auth/presentation/create_username.dart'; // Importa la nueva pantalla
 import 'features/profile/add_friend_screen.dart';
+import 'features/profile/friends_list_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-void main() async {
+Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+  alert: true,
+  badge: true,
+  sound: true,
+  );
+  
   runApp(const JoinUsApp());
 }
 
@@ -90,6 +100,7 @@ class _JoinUsAppState extends State<JoinUsApp> {
         '/profile': (context) => ProfileScreen(toggleTheme: toggleTheme),
         '/create-username': (context) => const CreateUsernameScreen(),
         '/add-friend': (context) => const AddFriendScreen(),
+        '/view-friend': (context) => const FriendsListScreen(),
 
       },
       debugShowCheckedModeBanner: false, // Oculta la etiqueta de depuración

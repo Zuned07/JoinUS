@@ -4,10 +4,25 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class GoogleAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  
+  Future<void> saveFcmTokenToFirestore() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return;
+
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  if (fcmToken == null) return;
+
+  final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+  await userRef.update({
+    'fcmToken': fcmToken,
+  });
+}
 
 Future<void> signInWithGoogle(BuildContext context) async {
   try {

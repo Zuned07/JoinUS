@@ -64,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 void _loginWithGoogle() async {
   await _googleAuthService.signInWithGoogle(context);
+  await _googleAuthService.saveFcmTokenToFirestore();
 }
 
  Widget _buildGoogleSignInButton() {
