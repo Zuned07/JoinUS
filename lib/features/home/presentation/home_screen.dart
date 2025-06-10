@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
 
       case 2:
-      print("Aún no existe la pantalla");
+      Navigator.pushNamed(context,  '/profile');
         break;
 
       case 3: 
