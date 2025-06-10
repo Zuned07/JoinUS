@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:joinus/features/auth/presentation/create_username.dart';
 import 'package:joinus/features/auth/presentation/login_screen.dart';
 import 'package:joinus/features/auth/presentation/register_screen.dart';
 import 'package:joinus/features/auth/presentation/welcome_screen.dart';
@@ -36,8 +37,7 @@ class JoinUsApp extends StatelessWidget {
         '/login':(context) => LoginScreen(),
         '/calendar': (context) => CalendarScreen(),
         '/create-event': (context) => CreateEventScreen(),
-        
-
+        '/create-username': (_) => CreateUsernameScreen(),    
       },
       debugShowCheckedModeBanner: false,
       home: const AuthWrapper(),
