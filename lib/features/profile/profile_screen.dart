@@ -16,6 +16,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser!;
   List<String> selectedTags = [];
+  Map username= {
+  };
+  String a= "";
   bool isDarkMode = false;
 
   final List<String> availableTags = [
@@ -37,6 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (data != null && data.containsKey('interests')) {
       setState(() {
         selectedTags = List<String>.from(data['interests']);
+        username= data;
+        a = data['username'];
       });
     }
   }
@@ -49,6 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
       'email': user.email,
       'interests': selectedTags,
+      'username' : user.displayName,
     }, SetOptions(merge: true));
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -66,6 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: ListView(
           children: [
             Text('Correo: ${user.email}', style: const TextStyle(fontSize: 16)),
+            Text('Nombre de usuario: $a', style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 20),
             SwitchListTile(
               title: const Text('Modo oscuro'),
