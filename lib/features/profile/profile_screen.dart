@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final void Function(bool) toggleTheme;
+
+  const ProfileScreen({super.key, required this.toggleTheme});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -14,6 +16,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser!;
   List<String> selectedTags = [];
+  bool isDarkMode = false;
 
   final List<String> availableTags = [
     'exterior', 'deportes', 'familia', 'citas', 'interior',
@@ -55,12 +58,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(title: const Text('Perfil de Usuario')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Text('Correo: ${user.email}', style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 20),
+
+            /// 🔁 Cambiar tema
+            SwitchListTile(
+              title: const Text('Modo oscuro'),
+              value: isDarkMode,
+              onChanged: (value) {
+                setState(() => isDarkMode = value);
+                widget.toggleTheme(value);
+              },
+            ),
+
+            const SizedBox(height: 20),
             const Text('Selecciona tus intereses:', style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 10),
             Wrap(
               spacing: 8.0,
               children: availableTags.map((tag) {
