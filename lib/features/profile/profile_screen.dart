@@ -62,8 +62,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text('Correo: ${user.email}', style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 20),
-
-            /// 🔁 Cambiar tema
             SwitchListTile(
               title: const Text('Modo oscuro'),
               value: isDarkMode,

@@ -44,23 +44,36 @@ class _JoinUsAppState extends State<JoinUsApp> {
         brightness: Brightness.light,
         useMaterial3: true,
         colorScheme: const ColorScheme.light(
-          primary: Color(0xFFC62828), // rojo
-          secondary: Color(0xFFFF7043), // naranja
-          background: Color(0xFFFFF3E0), // fondo crema
+         primary: Color.fromARGB(255, 255, 57, 57), // rojo suave
+          secondary: Color.fromARGB(255, 243, 140, 105), // naranja suave
+          background: Color.fromARGB(255, 199, 105, 89), // marrón oscuro cálido para fondo
+          surface: Color.fromARGB(255, 255, 221, 202), // marrón para tarjetas esta vaina causa los problemas
+          onBackground: Colors.orangeAccent, // texto sobre fondo oscuro
         ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 245, 224), // fondo cálido en Scaffold
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF1A237E), // azul oscuro
-          secondary: Color(0xFF536DFE), // azul medio
-          background: Color(0xFFBBDEFB), // azul claro
+          primary: Color.fromARGB(255, 134, 109, 225), // rojo suave
+          secondary: Color.fromARGB(255, 68, 112, 170), // naranja suave
+          background: Color.fromARGB(255, 19, 12, 59), // marrón oscuro cálido para fondo
+          surface: Color.fromARGB(255, 37, 34, 101), // marrón para tarjetas
+          onBackground: Color.fromARGB(255, 119, 178, 217), // texto sobre fondo oscuro
         ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 15, 61), // fondo cálido en modo oscuro
       ),
+      builder: (context, child) {
+        // Aplica el color de fondo cálido de la paleta a toda la app
+        return Container(
+          color: Theme.of(context).colorScheme.background,
+          child: child,
+        );
+      },
       home: AuthWrapper(toggleTheme: toggleTheme),
       routes: {
-        '/home': (context) => HomeScreen(),
+        '/home': (context) => const HomeScreen(),
         '/register': (context) => const RegisterScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
@@ -85,7 +98,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         } else if (snapshot.hasData) {
-          return WelcomeScreen();
+          return const WelcomeScreen();
         } else {
           return const WelcomeScreen();
         }
