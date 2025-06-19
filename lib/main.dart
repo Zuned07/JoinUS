@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart'; // Asegúrate de que esta ruta sea correcta
+import 'firebase_options.dart';
 import 'features/auth/presentation/login_screen.dart';
 import 'features/auth/presentation/register_screen.dart';
 import 'features/auth/presentation/welcome_screen.dart';
@@ -10,23 +10,33 @@ import 'features/events/presentation/create_event_screen.dart';
 import 'features/home/presentation/calendar_screen.dart';
 import 'features/home/presentation/home_screen.dart';
 import 'features/profile/profile_screen.dart';
-import 'features/auth/presentation/create_username.dart'; // Importa la nueva pantalla
+import 'features/auth/presentation/create_username.dart';
 import 'features/profile/add_friend_screen.dart';
 import 'features/profile/friends_list_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future <void> main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
-  alert: true,
-  badge: true,
-  sound: true,
+    alert: true,
+    badge: true,
+    sound: true,
   );
-  
+
+  // Listener para cambios en el token FCM
+  FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && newToken != null) {
+      final userRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid);
+      await userRef.update({'fcmToken': newToken});
+    }
+  });
+
   runApp(const JoinUsApp());
 }
 
@@ -61,11 +71,21 @@ class _JoinUsAppState extends State<JoinUsApp> {
         colorScheme: const ColorScheme.light(
           primary: Color.fromARGB(255, 255, 57, 57), // rojo suave
           secondary: Color.fromARGB(255, 243, 140, 105), // naranja suave
-          background: Color.fromARGB(255, 199, 105, 89), // marrón oscuro cálido para fondo
+          background: Color.fromARGB(
+            255,
+            199,
+            105,
+            89,
+          ), // marrón oscuro cálido para fondo
           surface: Color.fromARGB(255, 255, 221, 202), // marrón para tarjetas
           onBackground: Colors.orangeAccent, // texto sobre fondo oscuro
         ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 245, 224), // fondo cálido en Scaffold
+        scaffoldBackgroundColor: const Color.fromARGB(
+          255,
+          255,
+          245,
+          224,
+        ), // fondo cálido en Scaffold
       ),
       // Tema para el modo oscuro
       darkTheme: ThemeData(
@@ -74,11 +94,31 @@ class _JoinUsAppState extends State<JoinUsApp> {
         colorScheme: const ColorScheme.dark(
           primary: Color.fromARGB(255, 134, 109, 225), // morado/azul suave
           secondary: Color.fromARGB(255, 68, 112, 170), // azul medio
-          background: Color.fromARGB(255, 19, 12, 59), // azul oscuro profundo para fondo
-          surface: Color.fromARGB(255, 37, 34, 101), // azul/morado oscuro para tarjetas
-          onBackground: Color.fromARGB(255, 119, 178, 217), // azul claro para texto sobre fondo oscuro
+          background: Color.fromARGB(
+            255,
+            19,
+            12,
+            59,
+          ), // azul oscuro profundo para fondo
+          surface: Color.fromARGB(
+            255,
+            37,
+            34,
+            101,
+          ), // azul/morado oscuro para tarjetas
+          onBackground: Color.fromARGB(
+            255,
+            119,
+            178,
+            217,
+          ), // azul claro para texto sobre fondo oscuro
         ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 15, 61), // fondo cálido en modo oscuro
+        scaffoldBackgroundColor: const Color.fromARGB(
+          255,
+          18,
+          15,
+          61,
+        ), // fondo cálido en modo oscuro
       ),
       // Builder para asegurar que el color de fondo de la paleta se aplique a toda la app
       builder: (context, child) {
@@ -96,12 +136,11 @@ class _JoinUsAppState extends State<JoinUsApp> {
         '/welcome': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
         '/calendar': (context) => const CalendarScreen(),
-        '/create-event': (context) => const CreateEventScreen(),        
+        '/create-event': (context) => const CreateEventScreen(),
         '/profile': (context) => ProfileScreen(toggleTheme: toggleTheme),
         '/create-username': (context) => const CreateUsernameScreen(),
         '/add-friend': (context) => const AddFriendScreen(),
         '/view-friend': (context) => const FriendsListScreen(),
-
       },
       debugShowCheckedModeBanner: false, // Oculta la etiqueta de depuración
     );
@@ -119,7 +158,9 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Muestra un indicador de carga mientras se verifica el estado de autenticación
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         } else if (snapshot.hasData) {
           // Si el usuario está autenticado, dirígelo a la pantalla de inicio
           return const HomeScreen(); // Cambiado de WelcomeScreen a HomeScreen como en el segundo main.dart
