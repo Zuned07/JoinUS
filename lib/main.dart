@@ -17,6 +17,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+//this works?
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -36,7 +37,7 @@ Future<void> main() async {
   // Listener para cambios en el token FCM
   FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
     final user = fb_auth.FirebaseAuth.instance.currentUser;
-    if (user != null && newToken != null) {
+    if (user != null) {
       final userRef = FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid);
@@ -77,15 +78,14 @@ class _JoinUsAppState extends State<JoinUsApp> {
         useMaterial3: true,
         colorScheme: const ColorScheme.light(
           primary: Color.fromARGB(255, 255, 57, 57), // rojo suave
-          secondary: Color.fromARGB(255, 243, 140, 105), // naranja suave
-          background: Color.fromARGB(
+          secondary: Color.fromARGB(
             255,
-            199,
+            243,
+            140,
             105,
-            89,
           ), // marrón oscuro cálido para fondo
           surface: Color.fromARGB(255, 255, 221, 202), // marrón para tarjetas
-          onBackground: Colors.orangeAccent, // texto sobre fondo oscuro
+          onSurface: Colors.orangeAccent, // texto sobre fondo oscuro
         ),
         scaffoldBackgroundColor: const Color.fromARGB(
           255,
@@ -100,12 +100,11 @@ class _JoinUsAppState extends State<JoinUsApp> {
         useMaterial3: true,
         colorScheme: const ColorScheme.dark(
           primary: Color.fromARGB(255, 134, 109, 225), // morado/azul suave
-          secondary: Color.fromARGB(255, 68, 112, 170), // azul medio
-          background: Color.fromARGB(
+          secondary: Color.fromARGB(
             255,
-            19,
-            12,
-            59,
+            68,
+            112,
+            170,
           ), // azul oscuro profundo para fondo
           surface: Color.fromARGB(
             255,
@@ -113,7 +112,7 @@ class _JoinUsAppState extends State<JoinUsApp> {
             34,
             101,
           ), // azul/morado oscuro para tarjetas
-          onBackground: Color.fromARGB(
+          onSurface: Color.fromARGB(
             255,
             119,
             178,
@@ -130,7 +129,7 @@ class _JoinUsAppState extends State<JoinUsApp> {
       // Builder para asegurar que el color de fondo de la paleta se aplique a toda la app
       builder: (context, child) {
         return Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           child: child,
         );
       },
