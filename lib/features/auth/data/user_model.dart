@@ -1,5 +1,4 @@
 // core/models/user_model.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   final String uid;
@@ -7,7 +6,6 @@ class UserModel {
   final String name;
   final List<String> tags; // Etiquetas de interés del usuario
   final List<String>? fcmTokens; // Lista de FCM tokens del usuario
-  final String? profileImageUrl; // URL de la imagen de perfil
 
   UserModel({
     required this.uid,
@@ -15,7 +13,6 @@ class UserModel {
     required this.name,
     this.tags = const [],
     this.fcmTokens,
-    this.profileImageUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +22,6 @@ class UserModel {
       'name': name,
       'tags': tags,
       if (fcmTokens != null && fcmTokens!.isNotEmpty) 'fcmTokens': fcmTokens,
-      if (profileImageUrl != null) 'profileImageUrl': profileImageUrl,
     };
   }
 
@@ -40,7 +36,6 @@ class UserModel {
       fcmTokens: (map['fcmTokens'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      profileImageUrl: map['profileImageUrl'] as String?,
     );
   }
 }

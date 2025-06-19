@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'modify_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -135,7 +134,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     username: a,
                     email: user.email ?? '',
                     tags: selectedTags,
-                    profileImageUrl: profileImageUrl,
                   ),
                 ),
               );
