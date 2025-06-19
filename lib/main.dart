@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'firebase_options.dart';
 import 'features/auth/presentation/login_screen.dart';
 import 'features/auth/presentation/register_screen.dart';
@@ -15,10 +15,17 @@ import 'features/profile/add_friend_screen.dart';
 import 'features/profile/friends_list_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await supabase.Supabase.initialize(
+    url:
+        'https://msqhlrgnkeuauiafyhff.supabase.co', // <--- Pega aquí tu URL de Supabase
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zcWhscmdua2V1YXVpYWZ5aGZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMjY4NzgsImV4cCI6MjA2NTkwMjg3OH0.J2WyXrPAPV46NNNSsLvRdGij7pWndaVDktq-XWI0UWU', // <--- Pega aquí tu anon/public key
+  );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -28,7 +35,7 @@ Future<void> main() async {
 
   // Listener para cambios en el token FCM
   FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = fb_auth.FirebaseAuth.instance.currentUser;
     if (user != null && newToken != null) {
       final userRef = FirebaseFirestore.instance
           .collection('users')
@@ -153,8 +160,8 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+    return StreamBuilder<fb_auth.User?>(
+      stream: fb_auth.FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Muestra un indicador de carga mientras se verifica el estado de autenticación
