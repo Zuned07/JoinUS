@@ -49,3 +49,13 @@ firebase.json
 android/app/src/debug/google-services.json
 ios/Runner/GoogleService-Info.plist
 .env
+service-account.json
+backend/service-account.json
+backend/node_modules/
+backend/package-lock.json
+backend/package.json
+backend/index.js
+backend/node_modules/
+backend/package-lock.json
+backend/package.json
+backend/index.js

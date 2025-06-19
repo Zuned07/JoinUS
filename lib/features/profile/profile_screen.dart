@@ -134,6 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     username: a,
                     email: user.email ?? '',
                     tags: selectedTags,
+                    toggleTheme: widget.toggleTheme,
                   ),
                 ),
               );

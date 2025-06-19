@@ -16,17 +16,13 @@ import 'features/profile/friends_list_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:intl/date_symbol_data_local.dart';
 
 //this works?
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await supabase.Supabase.initialize(
-    url:
-        'https://msqhlrgnkeuauiafyhff.supabase.co', // <--- Pega aquí tu URL de Supabase
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zcWhscmdua2V1YXVpYWZ5aGZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMjY4NzgsImV4cCI6MjA2NTkwMjg3OH0.J2WyXrPAPV46NNNSsLvRdGij7pWndaVDktq-XWI0UWU', // <--- Pega aquí tu anon/public key
-  );
+  await initializeDateFormatting('es', null);
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,

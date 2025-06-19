@@ -13,12 +13,13 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/images/logo.png', height: 200, width: 200),
             const Text(
               'JoinUS',
               style: TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Color.fromARGB(255, 201, 97, 12),
               ),
             ),
             const SizedBox(height: 60),

@@ -32,6 +32,8 @@ dependencies:
   supabase_flutter: ^2.9.1
   image_cropper: ^9.1.0
   sign_in_with_apple: ^7.0.1
+  http: ^1.4.0
+  googleapis_auth: ^2.0.0
 
 dev_dependencies:
   flutter_test:

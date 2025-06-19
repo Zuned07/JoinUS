@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:typed_data';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:image_cropper/image_cropper.dart';
 
 class ModifyProfileScreen extends StatefulWidget {
   final String username;
   final String email;
   final List<String> tags;
+  final void Function(bool)? toggleTheme;
 
   const ModifyProfileScreen({
     super.key,
     required this.username,
     required this.email,
     required this.tags,
+    this.toggleTheme,
   });
 
   @override
@@ -27,6 +25,7 @@ class _ModifyProfileScreenState extends State<ModifyProfileScreen> {
   late TextEditingController _emailController;
   late List<String> selectedTags;
   bool _saving = false;
+  bool _isDarkMode = false;
 
   final List<String> availableTags = [
     'exterior',
@@ -91,6 +90,21 @@ class _ModifyProfileScreenState extends State<ModifyProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Text('Tema oscuro'),
+                Switch(
+                  value: _isDarkMode,
+                  onChanged: (value) {
+                    setState(() => _isDarkMode = value);
+                    if (widget.toggleTheme != null) {
+                      widget.toggleTheme!(value);
+                    }
+                  },
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: _usernameController,
